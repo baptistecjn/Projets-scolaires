@@ -1,4 +1,4 @@
-import socket
+Mimport socket
 import random
 
 def generer_grille_vide(nb_col,nb_lig) :
