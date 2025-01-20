@@ -1,0 +1,56 @@
+PHP
+
+commentaires : une ligne -> //
+	       plusieurs -> /*...*/
+
+variables : $nom_variable = valeur (pas de majuscules ni de chiffre en DEBUT de variable)
+
+guillemets simple -> n'interprete pas les var
+guillemets doubles -> interprete les var
+
+'d\'un' -> d'un
+
+Tableau : 
+-clé -> valeur
+-clé = entier, valeur peu importe
+(par default clef = place dans la liste)
+
+$tableau = array();
+$tableau[clef] = valeur;
+print (ou echo) $tableau[clef]-> affiche valeur
+print_r($tableau) ou var_dump($tableau) -> affiche tout le tableau
+
+tester si une fonction existe : if (function_exist("somme"))
+				    echo("somme existe")
+
+
+p.80 fonctions validation des données
+
+variables de session : $_SESSION (ne changent pas d'une page à l'autre)
+session_start(); pour les récupérer
+session_destroy(); pour la détruire
+
+
+mysqli pour les bases de données
+connexion à la base de donnée : -s'y connecter 		-> mysqli_connect(identifiants)
+				-exécuter une requete   -> *
+				-recupérer le résultat  
+				-fermer la session	->mysqli_close($objet de connection)
+							  $objet de connection = myqli_connect(identifiants)
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+rapport d'erreur avant la tentative de connection
+
+*
+-requêtes non préparées : • $requette= .... 
+			    $resultat = mysqli_query(lien de connection, $requette);
+		          • voir sur php.net
+
+
+-requête préparées :      • 
+
+
+
+
+
+
