@@ -1,0 +1,409 @@
+/*Général*/
+:root {
+    --fond: rgb(49, 56, 55);
+    --fond-dark: rgb(43, 49, 47);
+    --fond-deep-dark: rgb(30, 34, 33);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    color: white;
+}
+
+body { 
+    background-color: var(--fond);
+    min-height: 100vh;
+}
+
+main{
+    min-height: 60vh;
+    padding: 4%;
+}
+
+.centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Entête*/
+
+header {
+    background-color: var(--fond-deep-dark);
+    z-index: 999;
+    max-height: 10vh;
+    padding-block: 2%;
+}
+
+.logo {
+    width: 20%;
+    display: block;
+    margin: auto;
+}
+
+/*Navigation*/
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: var(--fond-dark);
+    max-height: 10vh;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+}
+
+li:hover{
+    background: var(--fond-deep-dark);
+    
+}
+
+nav ul li {
+    padding:1em;
+}
+
+nav ul li a {
+    text-decoration: none;
+    
+    font-variant: small-caps;
+}
+
+.color{
+    background-color: var(--fond-deep-dark);
+    
+}
+
+/*Accueil*/
+
+.container-search{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: 25%;
+}
+
+.container-picture{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 4%;
+    margin-inline: 10%;
+}
+
+.jaquette{
+    max-width: 500px;
+    max-height: 200px;
+}
+
+.search {
+    display: inline-block;
+    position: relative;
+}
+
+.search input[type="text"] {
+    width: 200px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search button[type="submit"] {
+    background-color: var(--fond-dark);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    right: -2px;
+    transition: .9s ease;
+}
+
+.search button[type="submit"]:hover {
+    transform: scale(1.1);
+    color: rgb(255, 255, 255);
+    background-color: var(--fond-deep-dark);
+}
+
+.select {
+    display: inline-block;
+    position: relative;
+}
+
+select{
+    width: 200px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: var(--fond-dark);
+    
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: var(--fond-deep-dark);
+    border-radius: 5px;
+}
+
+/*Connexion*/
+
+.form-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline: 18%;
+}
+
+.form {
+    border: solid;
+    border-color: white;
+    background-color: var(--fond);
+    display: block;
+    padding: 1rem;
+    max-width: 350px;
+    border-radius: 0.5rem;
+}
+
+.form-title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+    
+}
+
+select{
+    color: grey;
+}
+
+select option{
+    color: black;
+}
+
+
+.input-container {
+    position: relative;
+}
+
+.input-container input, .form button {
+    outline: none;
+    border: 1px solid #e5e7eb;
+    margin: 8px 0;
+}
+
+.input-container input {
+    background-color: var(--fond-dark);
+    color: grey;
+    padding: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    width: 300px;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.submit {
+    display: block;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    background-color: var(--fond-deep-dark);
+    color: #ffffff;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    width: 100%;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+}
+
+/*Article*/
+
+.titre-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline: 25%;
+}
+
+.caracteristique-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4%;
+    padding-inline: 7%;
+}
+
+.caracterstique{
+    padding: 20px;
+    background-color: var(--fond-dark);
+    border-radius: 25px;
+}
+
+.synopsis{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4%;
+    padding-inline: 10%;
+}
+
+.article-avis-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2%;
+    margin-inline: 2%;
+}
+
+.article-container{
+    background-color: red;
+    padding: 5%;
+    width: 200%;
+}
+
+.article-container img{
+    max-width: 50rem;
+    max-height: 20rem;
+}
+
+.moyenne-avis{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 20%;
+    padding-bottom: 4% ;
+}
+
+.liste-avis-container{
+    background-color: blue;
+    width: fit-content;
+    padding: 5%;
+}
+
+.avis-container{
+    border: solid;
+    padding: 5%;
+}
+
+.article-title{
+    
+    font-size: 25px;
+}
+
+.pdp-pseudo{
+    display: flex;
+    flex-direction: row;
+}
+
+.checked {
+    color: orange;
+}
+
+.pdp-avis{
+    margin-right: 7%;
+    border-radius: 50%;
+    width: 3rem;
+}
+
+.titre-avis{
+    font-size: 20px;
+    font-weight: bold;
+    padding-block: 2%;
+}
+
+.pdp-pseudo{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.texte-avis{
+    padding-block: 2%;
+    font-size: 15px;
+}
+
+.avis-star-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 20%;
+}
+
+.pseudo{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/*Profil*/
+
+.info-profil-date-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 20%;
+    padding-block: 4%;
+}
+
+.info-profil-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.liste-avis-profil-container{
+    margin-top: 4%;
+}
+
+.info-profil-publique-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 5%;
+}
+
+.dates{
+    display: flex;
+    flex-direction: column;
+}
+
+/*Pied de page*/
+
+footer {
+    background-color: var(--fond-deep-dark);
+    
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-height: 10vh;
+}
