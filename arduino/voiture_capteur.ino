@@ -1,4 +1,3 @@
-
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -89,17 +88,14 @@
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
 
-
-
 #include <Wire.h>
 #include "rgb_lcd.h"
 
 const int VER = A1;
 const int HOR = A0;
 const int SEL = A3;
-const int trigger = 2;
-const int echo = 4; 
-
+const int trigger = 4;
+const int echo = 2; 
 
 // Broches pour le moteur B
 const int motorB_IN3 = 10; // Direction 1
@@ -108,143 +104,124 @@ const int motorB_ENB = 9;  // Contrôle vitesse (PWM)
 
 rgb_lcd lcd;
 
+// Vitesse du son en m/s
+const float SOUND_SPEED = 340.0; 
 
 void setup() {
-  pinMode(VER,INPUT);
-  pinMode(HOR,INPUT);
-  pinMode(SEL,INPUT);
-  pinMode(trigger,OUTPUT);        //lancer le capteur
-  pinMode(echo,INPUT);            //temps de distance
-
+  pinMode(VER, INPUT);
+  pinMode(HOR, INPUT);
+  pinMode(SEL, INPUT);
+  pinMode(trigger, OUTPUT);  //lancer le capteur
+  pinMode(echo, INPUT);      //temps de distance
 
   pinMode(motorB_IN3, OUTPUT);
   pinMode(motorB_IN4, OUTPUT);
   pinMode(motorB_ENB, OUTPUT);
 
-
   Serial.begin(9600);
-  rgb_lcd lcd;
+  lcd.begin(16, 2);
+  lcd.setRGB(100, 100, 100);
 }
 
-
 void loop() {  
-  lcd.begin(16, 2);
-  lcd.setRGB(100,100, 100);
-  
-
   float joyVer = analogRead(VER);
   float joyHor = analogRead(HOR);
   int joySel = digitalRead(SEL);
 
-  digitalWrite(trigger,HIGH);
+  // Mesure de la distance
+  digitalWrite(trigger, HIGH);
   delay(100);
-  digitalWrite(trigger,LOW);
-  
-  int pulse = pulseIn(echo,HIGH);
-  
-  float dist = 0.5 * 340.0 * pulse / 10000.0;
-  if(dist<5){
-    lcd.setRGB(255,0,0);
-    lcd.setCursor(0,0);
+  digitalWrite(trigger, LOW);
+  int pulse = pulseIn(echo, HIGH);
+  float dist = 0.5 * SOUND_SPEED * pulse / 10000.0;
+
+  // Si obstacle trop proche
+  if (dist < 5) {
+    lcd.clear();
+    lcd.setRGB(255, 0, 0);
+    lcd.setCursor(0, 0);
     lcd.print("Danger trop pres");
-    lcd.setCursor(5,1);
+    lcd.setCursor(5, 1);
     lcd.print(dist);
-    lcd.print("cm");
+    lcd.print(" cm");
     int noteDuration = 1000 / 8;
     tone(8, NOTE_D7, noteDuration);
-      
     delay(noteDuration);
     noTone(8);
   }
-
-//----------------------------------------------//
-  else{
-    if(joyHor>750){
-      lcd.setRGB(255, 80, 0);
-      lcd.print("           ---->");
-      lcd.setCursor(0,1);
-      lcd.print("           ---->");
-      lcd.setCursor(0,0);
-      int noteDuration = 1000 / 6;
-      tone(8, NOTE_C3, noteDuration);
-  
-      delay(noteDuration+200);
-      noTone(8);
-      tone(8, NOTE_C4, noteDuration);
-  
-      delay(noteDuration);
-      noTone(8);
-    }
-
-    
-    if(joyHor<250){
-      lcd.setRGB(255, 80, 0);
-      lcd.print("<----");
-      lcd.setCursor(0,1);
-      lcd.print("<----");
-      lcd.setCursor(0,0);
-      int noteDuration = 1000 / 6;
-      tone(8, NOTE_C3, noteDuration);
-  
-      delay(noteDuration+200);
-      noTone(8);
-      tone(8, NOTE_C4, noteDuration);
-  
-      delay(noteDuration);
-      noTone(8);
-    }
-
-
-    else{
-      
-      if (joyVer < 400) {
-        lcd.print("^^^^^^^^^^^^^^^^");
-        lcd.setCursor(0, 1);
-        lcd.print("||||||||||||||||");
-        lcd.setCursor(0, 0);
-      
-
-      }
-
-
-      if(joyVer>750){
-        
-          lcd.setRGB(255,40,0);
-          lcd.print("||||||||||||||||");
-          lcd.setCursor(0,1);
-          lcd.print("vvvvvvvvvvvvvvvv");
-          lcd.setCursor(0,0);
-  
-          int noteDuration = 1000 / 2;
-          tone(8, NOTE_D7, noteDuration);
-      
-          delay(noteDuration+300);
-
-          noTone(8);
-
-      }
-    }
-
-
-    if(joySel == 0){
-      lcd.setCursor(2,0);
-      lcd.print("TUT TUUUUUTT");        
-      lcd.setCursor(2,1);
-      lcd.print("BIP BIIIIIPP");
-      lcd.setCursor(0,0);   
-      int noteDuration = 1000 / 6;
-      tone(8, NOTE_C6, noteDuration);
-  
-      delay(noteDuration+200);
-      noTone(8);
-    }
+  // Joystick à droite
+  else if (joyHor > 750) {
+    lcd.clear();
+    lcd.setRGB(255, 80, 0);
+    lcd.setCursor(0, 0);
+    lcd.print("           ---->");
+    lcd.setCursor(0, 1);
+    lcd.print("           ---->");
+    int noteDuration = 1000 / 6;
+    tone(8, NOTE_C3, noteDuration);
+    delay(noteDuration + 200);
+    noTone(8);
+    tone(8, NOTE_C4, noteDuration);
+    delay(noteDuration);
+    noTone(8);
   }
-  
-//-------------------------------------------------------//
+  // Joystick à gauche
+  else if (joyHor < 250) {
+    lcd.clear();
+    lcd.setRGB(255, 80, 0);
+    lcd.setCursor(0, 0);
+    lcd.print("<----");
+    lcd.setCursor(0, 1);
+    lcd.print("<----");
+    int noteDuration = 1000 / 6;
+    tone(8, NOTE_C3, noteDuration);
+    delay(noteDuration + 200);
+    noTone(8);
+    tone(8, NOTE_C4, noteDuration);
+    delay(noteDuration);
+    noTone(8);
+  }
+  // Joystick en haut
+  else if (joyVer < 400) {
+    lcd.clear();
+    lcd.print("^^^^^^^^^^^^^^^^");
+    lcd.setCursor(0, 1);
+    lcd.print("||||||||||||||||");
+    digitalWrite(motorB_IN3, LOW);
+    digitalWrite(motorB_IN4, HIGH);
+    analogWrite(motorB_ENB, 150);
+    while (analogRead(VER) < 400) {
+      // Attente
+    }
+    digitalWrite(motorB_IN3, LOW);
+    digitalWrite(motorB_IN4, LOW);
+    analogWrite(motorB_ENB, 0);
+  }
+  // Joystick en bas
+  else if (joyVer > 750) {
+    lcd.clear();
+    lcd.setRGB(255, 40, 0);
+    lcd.setCursor(0, 0);
+    lcd.print("||||||||||||||||");
+    lcd.setCursor(0, 1);
+    lcd.print("vvvvvvvvvvvvvvvv");
+    int noteDuration = 1000 / 2;
+    tone(8, NOTE_D7, noteDuration);
+    delay(noteDuration + 300);
+    noTone(8);
+  }
+  // Si le bouton est pressé
+  if (joySel == 0) {
+    lcd.clear();
+    lcd.setCursor(2, 0);
+    lcd.print("TUT TUUUUUTT");        
+    lcd.setCursor(2, 1);
+    lcd.print("BIP BIIIIIPP");
+    int noteDuration = 1000 / 6;
+    tone(8, NOTE_C6, noteDuration);
+    delay(noteDuration + 200);
+    noTone(8);
+  }
 
-
-  
-
-  delay(100);
-  
+  delay(1);
 }
