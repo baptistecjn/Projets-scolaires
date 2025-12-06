@@ -1,0 +1,81 @@
+@startuml
+
+class Buffer {
+    +JTextArea textArea
+    +String notes
+    +void addPanel(JPanel)
+}
+
+class Recorder {
+    -List<Commande> recorded
+    -boolean recording
+    +void start()
+    +void stop()
+    +void add(Commande)
+    +void replay()
+    +boolean isRecording()
+}
+
+class UndoManager {
+    -Stack<Commande> undoStack
+    -Stack<Commande> redoStack
+    +void add(Commande)
+    +void undo()
+    +void redo()
+    +boolean canUndo()
+    +boolean canRedo()
+    +void clear()
+}
+
+abstract class Commande {
+    #Buffer buffer
+    +abstract void execute()
+}
+
+interface Reversible {
+    +void undo()
+    +void redo()
+}
+
+class Insert extends Commande implements Reversible {
+    -String texte
+    -int position
+    +void execute()
+    +void undo()
+    +void redo()
+}
+
+class Cut extends Commande implements Reversible {
+    -String oldText
+    -int start
+    -int end
+    +void execute()
+    +void undo()
+    +void redo()
+}
+
+class Copy extends Commande implements Reversible {
+    -String oldNotes
+    +void execute()
+    +void undo()
+    +void redo()
+}
+
+class Paste extends Commande implements Reversible {
+    -String pastedText
+    -int position
+    +void execute()
+    +void undo()
+    +void redo()
+}
+
+class Select extends Commande {
+    -int debut
+    -int fin
+    +void execute()
+}
+
+Buffer "1" --> "n" Commande : utilise >
+Recorder "1" --> "n" Commande : enregistre >
+UndoManager "1" --> "n" Commande : gère >
+@enduml

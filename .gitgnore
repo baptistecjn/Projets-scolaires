@@ -1,0 +1,12 @@
+# Java
+*.class
+out/
+*.iml
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Système
+.DS_Store

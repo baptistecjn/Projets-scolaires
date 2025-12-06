@@ -1,0 +1,23 @@
+@startuml
+title Séquence "Insérer du texte" - Mini-Éditeur de texte
+
+actor Utilisateur
+
+participant "Main" as Main
+participant "Insert" as Insert
+participant "Buffer" as Buffer
+participant "TextArea" as TextArea
+
+Utilisateur -> Main : Clique sur le bouton "Insert"
+Main -> Utilisateur : Demande texte (JOptionPane)
+Utilisateur --> Main : Saisit le texte à insérer
+Main -> Insert : new Insert(buffer, texte)
+Main -> Insert : execute()
+
+Insert -> Buffer : getCaretPosition()
+Buffer -> TextArea : getCaretPosition()
+TextArea --> Buffer : position du curseur
+
+Insert -> Buffer : textArea.insert(texte, position)
+
+@enduml

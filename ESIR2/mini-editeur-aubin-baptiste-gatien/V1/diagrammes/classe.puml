@@ -1,0 +1,62 @@
+@startuml
+title Diagramme de classes - Mini-Éditeur de texte - Version 1
+
+
+class Buffer {
+    - frame : JFrame
+    + textArea : JTextArea
+    + notes : String
+    + Buffer()
+    + addPanel(panel : JPanel) : void
+}
+
+
+abstract class Commande {
+    # buffer : Buffer
+    + Commande(buffer : Buffer)
+}
+
+class Copy {
+    + Copy(buffer : Buffer)
+    + execute() : void
+}
+
+class Cut {
+    + Cut(buffer : Buffer)
+    + execute() : void
+}
+
+class Paste {
+    + Paste(buffer : Buffer)
+    + execute() : void
+}
+
+class Insert {
+    - texte : String
+    + Insert(buffer : Buffer, texte : String)
+    + execute() : void
+}
+
+class Select {
+    - debut : int
+    - fin : int
+    + Select(d : int, f : int, buffer : Buffer)
+    + execute() : void
+}
+
+
+class Main {
+    + main(args : String[]) : void
+}
+
+Commande <|-- Copy
+Commande <|-- Cut
+Commande <|-- Paste
+Commande <|-- Insert
+Commande <|-- Select
+
+Main --> Buffer
+Main --> Commande : "utilise"
+Commande --> Buffer : "agit sur"
+
+@enduml

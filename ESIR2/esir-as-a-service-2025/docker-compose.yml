@@ -1,0 +1,213 @@
+volumes:
+  nextcloud:
+  db:
+  rocketchat_data:
+  mongo_data:
+  gitea_data:
+  memos_data:
+  keepassxc_config:
+  wordpress_data:
+  wordpress_db_data:
+  statping_data:
+
+services:
+  # ------------------------------
+  # Base de données Nextcloud
+  # ------------------------------
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=SuperRootPassword123!
+      - MYSQL_PASSWORD=NextcloudPass123!
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  # ------------------------------
+  # Nextcloud
+  # ------------------------------
+  nextcloud:
+    image: nextcloud
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=NextcloudPass123!
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+      - NEXTCLOUD_TRUSTED_DOMAINS=baptiste.istic.univ-rennes1.fr 148.60.11.90, localhost
+      - OVERWRITEWEBROOT=/nextcloud
+      - OVERWRITEPROTOCOL=https
+      - OVERWRITEHOST=baptiste.istic.univ-rennes1.fr
+
+  # ------------------------------
+  # KeePass
+  # ------------------------------
+  keepassxc:
+    image: lscr.io/linuxserver/keepassxc:latest
+    container_name: keepassxc
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - keepassxc_config:/config
+    ports:
+      - "3004:3000"
+      - "3005:3001"
+
+  # ------------------------------
+  # Memos
+  # ------------------------------
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    restart: unless-stopped
+    volumes:
+      - memos_data:/var/opt/memos
+    ports:
+      - "5230:5230"
+
+  # ------------------------------
+  # Pages statiques (Nginx)
+  # ------------------------------
+  pages:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "8010:80"
+    volumes:
+      - ./pages:/usr/share/nginx/html:ro
+
+  # ------------------------------
+  # Gitea
+  # ------------------------------
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - gitea_data:/data
+    environment:
+      - GITEA__server__ROOT_URL=https://baptiste.istic.univ-rennes1.fr/gitea/
+      - GITEA__server__DOMAIN=baptiste.istic.univ-rennes1.fr
+      - GITEA__server__PROTOCOL=http
+  # ------------------------------
+  # MongoDB (pour Rocket.Chat)
+  # ------------------------------
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    command: --replSet rs0 --oplogSize 128
+    volumes:
+      - mongo_data:/data/db
+
+  # ------------------------------
+  # Rocket.Chat
+  # ------------------------------
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - ROOT_URL=https://baptiste.istic.univ-rennes1.fr/rocketchat
+      - PORT=3000
+      - HTTP_FORWARDED_COUNT=1
+      - OVERWRITE_SETTING_Site_Url=https://baptiste.istic.univ-rennes1.fr/rocketchat
+    ports:
+      - "3003:3000"
+    volumes:
+      - rocketchat_data:/app/uploads
+
+  # ------------------------------
+  # Base de données WordPress
+  # ------------------------------
+  wordpress_db:
+    image: mariadb:latest
+    container_name: wordpress_db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=RootWP123!
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=WordPressPass123!
+    volumes:
+      - wordpress_db_data:/var/lib/mysql
+
+  # ------------------------------
+  # WordPress
+  # ------------------------------
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - wordpress_db
+    ports:
+      - "8082:80"   # HTTP direct
+    environment:
+      - WORDPRESS_DB_HOST=wordpress_db:3306
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=WordPressPass123!
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_CONFIG_EXTRA=if (strpos($$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) $$_SERVER['HTTPS']='on';
+
+    volumes:
+      - wordpress_data:/var/www/html
+
+  # ------------------------------
+  # phpMyAdmin (WordPress)
+  # ------------------------------
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - wordpress_db
+    ports:
+      - "8083:80"
+    environment:
+      - PMA_HOST=wordpress_db
+      - PMA_USER=root
+      - PMA_PASSWORD=RootWP123!
+
+
+  # ------------------------------
+  # Gatus
+  # ------------------------------
+  gatus:
+    image: twinproduction/gatus:latest
+    container_name: gatus
+    restart: always
+    volumes:
+      - /home/baptiste/esir-as-a-service-2025/gatus/config.yaml:/config/config.yaml
+    ports:
+      - "3007:8080"
+    environment:
+      - GATUS_CONFIG_PATH=/config/config.yaml
+      - LOG_LEVEL=debug
+
+  # ------------------------------
+  # Adminer
+  # ------------------------------
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8085:8080"

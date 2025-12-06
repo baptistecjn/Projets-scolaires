@@ -1,0 +1,56 @@
+ui:
+  title: "Monitoring ESIR"
+  header: "État des Services"
+
+endpoints:
+  - name: "Rocket.Chat"
+    group: "Communication"
+    url: "http://rocketchat:3000/api/info"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: "Nextcloud"
+    group: "Fichiers"
+    url: "http://nextcloud:80/status.php"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].installed == true"
+
+  - name: "Gitea"
+    group: "Dev"
+    url: "http://gitea:3000/"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: "WordPress"
+    group: "Web"
+    url: "http://wordpress:80/"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == pat(*WordPress*)"
+
+  - name: "Memos"
+    group: "Notes"
+    url: "http://memos:5230/"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: "Adminer"
+    group: "Dev"
+    url: "http://adminer:8080/"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == pat(*Adminer*)"
+
+  - name: "KeePassXC"
+    group: "Securité"
+    url: "http://keepassxc:3000/"
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"

@@ -1,0 +1,29 @@
+@startuml
+left to right direction
+title Mini-Éditeur de texte – Version 1
+
+actor "Utilisateur" as User
+
+rectangle "Mini-Éditeur" {
+    usecase "Insérer du texte" as UC_Insert
+    usecase "Sélectionner du texte" as UC_Select
+    usecase "Copier la sélection" as UC_Copy
+    usecase "Couper la sélection" as UC_Cut
+    usecase "Coller le texte" as UC_Paste
+    usecase "Déplacer le curseur" as UC_Cursor
+}
+
+User --> UC_Insert
+User --> UC_Select
+User --> UC_Copy
+User --> UC_Cut
+User --> UC_Paste
+User --> UC_Cursor
+
+UC_Cut .> UC_Copy : <<include>>
+UC_Copy .> UC_Select : <<include>>
+UC_Cut .> UC_Select : <<include>>
+UC_Paste .> UC_Copy : <<extend>>
+UC_Paste .> UC_Cut : <<extend>>
+
+@enduml

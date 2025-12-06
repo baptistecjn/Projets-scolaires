@@ -1,0 +1,22 @@
+@startuml
+title Séquence "Couper" - Mini-Éditeur de texte
+
+actor Utilisateur
+
+participant "Main" as Main
+participant "Cut" as Cut
+participant "Buffer" as Buffer
+participant "TextArea" as TextArea
+
+Utilisateur -> Main : Clique sur le bouton "Cut"
+Main -> Cut : new Cut(buffer)
+Main -> Cut : execute()
+
+Cut -> Buffer : getSelectedText()
+Buffer -> TextArea : getSelectedText()
+TextArea --> Buffer : texte sélectionné
+
+Cut -> Buffer : notes = sélection
+Cut -> Buffer : textArea.replaceSelection("")
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+left to right direction
+actor "Utilisateur" as User
+
+rectangle "Mini-éditeur V2" {
+    User --> (Insérer du texte)
+    User --> (Sélectionner du texte)
+    User --> (Couper)
+    User --> (Copier)
+    User --> (Coller)
+    User --> (Déplacer curseur)
+    User --> (Démarrer l'enregistrement)
+    User --> (Arrêter l'enregistrement)
+    User --> (Rejouer actions)
+    User --> (Annuler action)
+    User --> (Refaire action)
+}
+@enduml
