@@ -1,0 +1,116 @@
+:host {
+  --nav-bg: #280038;       
+  --nav-text: #ffffff;
+  --accent-color: #f1f1f1;  
+  --logout-bg: #ef4444;     
+  --hover-bg: #d2c5da;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  height: 64px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Logo / Titre modifié pour l'image */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.nav-logo {
+  height: 45px; /* Ajusté pour tenir dans les 64px de la navbar */
+  width: auto;
+  border-radius: 4px; /* Optionnel : pour adoucir les angles du logo */
+  object-fit: contain;
+}
+
+/* Conteneur des liens */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Liens de navigation */
+.nav-links a {
+  color: var(--nav-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+}
+
+.nav-links a:hover {
+  background-color: var(--hover-bg);
+  color: var(--nav-bg); /* Changé pour plus de contraste sur le mauve clair */
+}
+
+/* Barre de recherche */
+.search-box {
+  display: flex;
+  background: var(--hover-bg);
+  border-radius: 20px;
+  padding: 4px 12px;
+  align-items: center;
+  border: 1px solid transparent;
+  transition: border 0.3s;
+}
+
+.search-box:focus-within {
+  border: 1px solid var(--accent-color);
+}
+
+/* Style spécifique pour le select dans la search-box */
+.search-select {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.8rem;
+  margin-right: 5px;
+  cursor: pointer;
+  color: #000;
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 4px;
+  outline: none;
+  width: 150px;
+  font-size: 0.85rem;
+}
+
+.search-box button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Bouton Déconnexion */
+.logout-btn {
+  background-color: var(--logout-bg);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}

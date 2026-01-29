@@ -1,0 +1,82 @@
+<div class="profile-container">
+
+    <div class="profile-card" *ngIf="currentUser$ | async as user; else loading">
+
+        <div class="avatar-circle">
+            <span class="initials">{{ user.firstname?.charAt(0) || 'U' }}</span>
+        </div>
+
+        <h2>Profil de {{ user.username }}</h2>
+
+        <div class="info-group" *ngIf="!isEditing">
+            <p><strong>ID :</strong> #{{ user.id }}</p>
+            <p><strong>Nom :</strong> {{ user.lastname }}</p>
+            <p><strong>Prénom :</strong> {{ user.firstname }}</p>
+            <p><strong>Age :</strong> {{ user.age }} ans</p>
+        </div>
+
+        <div class="associations-section" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h3>Mes Associations & Rôles</h3>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #ddd;">Association</th>
+                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #ddd;">Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of user.roles">
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                            {{ r.association?.name }}
+                        </td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                            <span class="role-badge">{{ r.name }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p *ngIf="!user.roles || user.roles.length === 0"
+                style="color: #666; font-style: italic; margin-top: 10px;">
+                Aucune association rejointe.
+            </p>
+        </div>
+
+        <div class="edit-group" *ngIf="isEditing">
+            <div class="form-item">
+                <label>Nom :</label>
+                <input type="text" [(ngModel)]="editForm.lastname">
+            </div>
+            <div class="form-item">
+                <label>Prénom :</label>
+                <input type="text" [(ngModel)]="editForm.firstname">
+            </div>
+            <div class="form-item">
+                <label>Age :</label>
+                <input type="number" [(ngModel)]="editForm.age">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-edit" *ngIf="isOwnProfile && !isEditing" (click)="startEdit(user)">
+                Modifier mes infos
+            </button>
+
+            <button class="btn-suppr" *ngIf="isOwnProfile" (click)="deleteUser(user.id)">
+                Supprimer l'utilisateur
+            </button>
+
+            <div class="edit-buttons" *ngIf="isEditing">
+                <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+                <button class="btn-save" (click)="saveProfile()">Enregistrer</button>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template #loading>
+        <div class="loading-msg">Chargement de votre profil...</div>
+    </ng-template>
+
+</div>

@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <img src="publicasso.png" alt="Logo PublicAsso" class="nav-logo">
+  </div>
+  
+  @if (isLogged) {
+    <div class="nav-links">
+        <a routerLink="/users">Utilisateurs</a>
+
+        <a routerLink="/associations">Associations</a>
+
+      <div class="search-box">
+        <select #searchType class="search-select">
+          <option value="users">Utilisateur</option>
+          <option value="associations">Association</option>
+        </select>
+        
+        <input #searchInput type="text" placeholder="ID ou Nom...">
+        
+        <button (click)="onSearch(searchType.value, searchInput.value)">🔍</button>
+      </div>
+  
+      <a routerLink="/profile">Mon Profil</a>
+      <button class="logout-btn" (click)="logout()">Déconnexion</button>
+    </div>
+  } 
+</nav>

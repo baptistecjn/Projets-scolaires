@@ -1,0 +1,40 @@
+<h2>Liste des Associations</h2>
+
+<div class="add-asso-form">
+  <input type="text" [(ngModel)]="newAssoName" placeholder="Nom de la nouvelle association à ajouter"
+    class="input-new-asso">
+  <button (click)="createAssociation()" class="btn-add">
+    + Ajouter
+  </button>
+</div>
+
+<div class="table-container">
+
+  <table mat-table [dataSource]="(dataSource$ | async) || []">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Numéro </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        N° {{ i + 1 }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> NOM </th>
+      <td mat-cell *matCellDef="let element">
+        <strong>{{element.name | uppercase}}</strong>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
+      <td mat-cell *matCellDef="let element">
+        <button class="btn-details">Gérer</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToDetail(row.id)" class="clickable-row">
+    </tr>
+  </table>
+
+</div>

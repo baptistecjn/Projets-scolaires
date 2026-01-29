@@ -1,0 +1,120 @@
+<div class="asso-container" *ngIf="association; else loading">
+  <div class="asso-header">
+    <div class="header-top">
+      <div class="title-section">
+        <div *ngIf="!isEditing" class="title-row">
+          <h1>{{ association.name }}</h1>
+          <button *ngIf="isPresident()" class="btn-icon-edit" (click)="startEdit(association.name)">⚙️</button>
+        </div>
+        <div *ngIf="isEditing" class="edit-row">
+          <input type="text" [(ngModel)]="editName" class="input-title">
+          <button class="btn-save-mini" (click)="saveAsso()">OK</button>
+          <button class="btn-cancel-mini" (click)="cancelEdit()">X</button>
+        </div>
+      </div>
+      <button class="btn-delete" *ngIf="isPresident()" (click)="deleteAssociation()">
+        Supprimer l'association
+      </button>
+
+    </div>
+    <p class="description">Association ID: #{{ association.id }}</p>
+  </div>
+
+  <div class="actions">
+
+    <div class="join-group" *ngIf="!isMember">
+      <label>Choisir un rôle :</label>
+      <select [(ngModel)]="selectedRole" class="role-select">
+        <option *ngFor="let role of availableRoles" [value]="role">{{ role }}</option>
+      </select>
+
+      <button class="btn-join" (click)="joinAssociation()">
+        Rejoindre l'association
+      </button>
+    </div>
+
+    <div *ngIf="isMember" class="member-actions-panel">
+      <span class="status-text">Vous êtes membre de cette association.</span>
+
+      <button class="btn-leave" (click)="leaveAssociation()">
+        Quitter l'association
+      </button>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="members-section">
+    <h3>Membres ({{ association.members?.length || 0 }})</h3>
+    <div class="members-grid">
+      <div class="member-card" *ngFor="let member of (association.members || [])">
+        <div class="avatar-mini">
+          {{ member.firstname?.charAt(0) }}
+        </div>
+        <div class="member-info">
+          <div class="name-row">
+            <span class="name">{{ member.firstname }} {{ member.lastname }}</span>
+            <span class="role-badge" *ngIf="member.role">{{ member.role }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="minutes-section">
+    <h3>Procès-Verbaux ({{ minutes.length }})</h3>
+    <div class="add-minute-box" *ngIf="isMember && canPostMinute()">
+      <textarea [(ngModel)]="newMinuteContent" placeholder="Rédiger un nouveau Procès-Verbal"></textarea>
+      <div class="voters-selection" style="margin-top: 10px;">
+        <label style="display: block; font-size: 0.9em; color: #666; margin-bottom: 5px;">
+          Sélectionner les votants (maintenir Ctrl pour plusieurs) :
+        </label>
+        <select [(ngModel)]="selectedVoters" multiple class="voters-select"
+          style="width: 100%; padding: 5px; border-radius: 4px;">
+          <option *ngFor="let member of association.members" [value]="member.id">
+            {{ member.firstname }} {{ member.lastname }} ({{ member.role }})
+          </option>
+        </select>
+      </div>
+      <button class="btn-save-minute" (click)="createMinute()"
+        [disabled]="!newMinuteContent.trim() || selectedVoters.length === 0" style="margin-top: 10px;">
+        Publier le PV
+      </button>
+    </div>
+
+    <div *ngIf="isMember && !canPostMinute()"
+      style="background: #fdf2f2; padding: 10px; border-radius: 5px; color: #a94442; font-size: 0.9em; margin-bottom: 20px;">
+      Seuls le Président, le Secrétaire ou le Trésorier peuvent rédiger un PV.
+    </div>
+
+    <div class="minutes-list">
+      <div class="minute-card" *ngFor="let minute of minutes">
+        <div class="minute-header">
+          <span class="minute-date"> {{ minute.date }}</span>
+        </div>
+        <p class="minute-content">{{ minute.content }}</p>
+        <div class="minute-footer" *ngIf="minute.voters && minute.voters.length > 0">
+          <small>
+            Validé par :
+            <span *ngFor="let voter of minute.voters; let last = last">
+              {{ voter.firstname }} {{ voter.lastname }}{{ last ? '' : ', ' }}
+            </span>
+          </small>
+        </div>
+        <div class="minute-footer" *ngIf="!minute.voters || minute.voters.length === 0">
+          <small>Aucun votant enregistré</small>
+        </div>
+      </div>
+      <p *ngIf="minutes.length === 0" style="color: #888; font-style: italic;">Aucun PV publié pour le moment.</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div style="text-align:center; margin-top: 100px; color: #666;">
+    <h2>Chargement...</h2>
+  </div>
+</ng-template>

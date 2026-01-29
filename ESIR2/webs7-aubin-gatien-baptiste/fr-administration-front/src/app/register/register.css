@@ -1,0 +1,101 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f4fa;
+    font-family: 'Roboto', sans-serif;
+}
+
+.register-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+.form-row .form-group {
+    flex: 1; /* Pour que prénom et nom prennent 50% chacun */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 0.9rem;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Important pour ne pas casser la mise en page */
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: #6c0d8e;
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #000000 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s;
+}
+
+.btn-submit:hover {
+    transform: scale(1.02);
+}
+
+.login-link {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.login-link span {
+    color: #6c0d8e;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.error {
+    color: #d9534f;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
