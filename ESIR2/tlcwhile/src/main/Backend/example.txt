@@ -1,0 +1,39 @@
+func begin sub
+read Op1
+read Op2
+R1 = Op1
+R2 = Op2
+Result = nil
+R3 = Result
+R3 = Op1
+L1 : ifz Op2 goto break_for_L2
+Result = nil
+R4 = Result
+param Result
+R4 = TAIL 1
+param Op2
+Op2 = TAIL 1
+goto L1
+break_for_L2:
+write Result
+func end sub
+func begin add
+read Op1
+read Op2
+R1 = Op1
+R2 = Op2
+Result = nil
+R3 = Result
+R3 = Op1
+L1 : ifz Op2 goto break_for_L2
+Result = nil
+R4 = Result
+param nil
+param Result
+R4 = CONS 2
+param Op2
+Op2 = TAIL 1
+goto L1
+break_for_L2:
+write Result
+func end add
